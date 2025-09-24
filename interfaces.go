@@ -17,6 +17,7 @@ type IDiscordUnit interface {
 	Stop()
 
 	GetUser(string) (IDiscordUserUnit, error)
+	GetChannel(string) (IDiscordChannelUnit, error)
 	GetGuild(string) (IDiscordGuildUnit, error)
 
 	BotUser() IDiscordUserUnit

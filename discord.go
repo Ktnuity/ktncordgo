@@ -89,6 +89,18 @@ func (self *DiscordUnit) GetUser(userId string) (IDiscordUserUnit, error) {
 	}, nil
 }
 
+func (self *DiscordUnit) GetChannel(channelId string) (IDiscordChannelUnit, error) {
+	channel, err := self.session.Channel(channelId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch discord channel: %v", err)
+	}
+
+	return &DiscordChannelUnit{
+		discord: self,
+		channel: channel,
+	}, nil
+}
+
 func (self *DiscordUnit) GetGuild(guildId string) (IDiscordGuildUnit, error) {
 	guild, err := self.session.Guild(guildId)
 	if err != nil {
