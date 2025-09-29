@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// DiscordMessageSend contains options used for [DiscordChannelUnit.SendMessageOptions].
 type DiscordMessageSend struct {
 	Content string
 	Embeds []*DiscordEmbed
@@ -14,6 +15,7 @@ type DiscordMessageSend struct {
 	Reference IDiscordMessageUnit
 }
 
+// DiscordMessageEdit contains options used for [DiscordMessageUnit.EditOptions].
 type DiscordMessageEdit struct {
 	Content *string
 	embeds *[]*DiscordEmbed

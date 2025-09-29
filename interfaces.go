@@ -6,6 +6,9 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// IDiscordUnit is the root [ktncordgo] interface.
+//
+// See: [DiscordUnit]
 type IDiscordUnit interface {
 	Session() *discordgo.Session
 	NewInteractionUnit(interaction *discordgo.InteractionCreate) IDiscordInteractionUnit
@@ -23,8 +26,12 @@ type IDiscordUnit interface {
 	BotUser() IDiscordUserUnit
 }
 
+// IDiscordCommandFn is a slash command handler callback function definition.
 type IDiscordCommandFn func(IDiscordInteractionUnit) error
 
+// IDiscordInteractionUnit is the slash command interaction interface.
+//
+// See: [DiscordInteractionUnit]
 type IDiscordInteractionUnit interface {
 	Discord() IDiscordUnit
 	Native() *discordgo.InteractionCreate
@@ -38,6 +45,9 @@ type IDiscordInteractionUnit interface {
 	DispatchEvent(name string, callback IDiscordCommandFn) bool
 }
 
+// IDiscordGuildUnit is the guild interface.
+//
+// See: [DiscordGuildUnit]
 type IDiscordGuildUnit interface {
 	Discord() IDiscordUnit
 	Native() *discordgo.Guild
@@ -61,6 +71,9 @@ type IDiscordGuildUnit interface {
 	GetMemberCount() (int, error)
 }
 
+// IDiscordChannelUnit is the channel interface.
+//
+// See: [DiscordChannelUnit]
 type IDiscordChannelUnit interface {
 	Discord() IDiscordUnit
 	Native() *discordgo.Channel
@@ -90,6 +103,9 @@ type IDiscordChannelUnit interface {
 	SendTyping() error
 }
 
+// IDiscordMessageUnit is the message interface.
+//
+// See: [DiscordMessageUnit]
 type IDiscordMessageUnit interface {
 	Discord() IDiscordUnit
 	Native() *discordgo.Message
@@ -109,6 +125,9 @@ type IDiscordMessageUnit interface {
 	Reply(message string) (IDiscordMessageUnit, error)
 }
 
+// IDiscordUserUnit is the user interface.
+//
+// See: [DiscordUserUnit]
 type IDiscordUserUnit interface {
 	Discord() IDiscordUnit
 	Native() *discordgo.User

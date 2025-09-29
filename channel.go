@@ -7,50 +7,77 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// Discord returns the parent [DiscordUnit] object, the root of [ktncordgo].
 func (self *DiscordChannelUnit) Discord() IDiscordUnit {
 	return self.discord
 }
 
+// Native returns the underlying [discordgo.Channel] object.
 func (self *DiscordChannelUnit) Native() *discordgo.Channel {
 	return self.channel
 }
 
+// Snowflake returns the ID of the discord channel.
 func (self *DiscordChannelUnit) Snowflake() string {
 	return self.channel.ID
 }
 
+// Id returns the ID of the discord channel.
+//
+// See: [DiscordChannelUnit.Snowflake]
 func (self *DiscordChannelUnit) Id() string {
 	return self.channel.ID
 }
 
+// Guild returns the Guild that the current channel is in.
+//
+// See: [DiscordGuildUnit]
 func (self *DiscordChannelUnit) Guild() (IDiscordGuildUnit, error) {
 	return self.discord.GetGuild(self.channel.GuildID)
 }
 
+// Name returns the name of the current channel.
 func (self *DiscordChannelUnit) Name() string {
 	return self.channel.Name
 }
 
+// Topic returns the topic of the current channel.
 func (self *DiscordChannelUnit) Topic() string {
 	return self.channel.Topic
 }
 
+// Position returns the position of the current channel in the channel list.
 func (self *DiscordChannelUnit) Position() int {
 	return self.channel.Position
 }
 
+// NSFW returns true if the channel is marked as a NSFW channel.
 func (self *DiscordChannelUnit) NSFW() bool {
 	return self.channel.NSFW
 }
 
+// Type returns the type of the channel.
+//
+// See: [discordgo.ChannelType]
 func (self *DiscordChannelUnit) Type() discordgo.ChannelType {
 	return self.channel.Type
 }
 
+// Flags returns the flags of the channel.
+//
+// See: [discordgo.ChannelFlags]
 func (self *DiscordChannelUnit) Flags() discordgo.ChannelFlags {
 	return self.channel.Flags
 }
 
+// FetchMessage finds and returns a single message sent in the channel.
+//
+// Parameters:
+//   messageId - The ID of the message to look for.
+//
+// Returns the [DiscordMessageUnit] of the message if found, otherwise an error.
+//
+// See: [DiscordMessageUnit]
 func (self *DiscordChannelUnit) FetchMessage(messageId string) (IDiscordMessageUnit, error) {
 	msg, err := self.discord.session.ChannelMessage(self.channel.ID, messageId)
 	if err != nil {
@@ -63,11 +90,19 @@ func (self *DiscordChannelUnit) FetchMessage(messageId string) (IDiscordMessageU
 	}, nil
 }
 
+// FetchMessages finds and returns the latest X messages in the channel.
+//
+// Parameters:
+//   limit - The amount of channels to find. Min: 1. Max: 100.
+//
+// Returns a slice of the found messages on success, otherwise an error.
+//
+// See: [DiscordMessageUnit]
 func (self *DiscordChannelUnit) FetchMessages(limit int) ([]IDiscordMessageUnit, error) {
 	if limit > 100 {
 		log.Printf("FetchMessages limit '%d' is larger than max allowed '%d'\n", limit, 100)
 		limit = 100
-	} else if limit < 1 {
+	} else if limit < 1 { // I know minimul is mentioned to be 1, but we're not just gonna error if the user pick anything less.
 		log.Printf("FetchMesssages limit '%d' is less than min allowed '%d'\n", limit, 0)
 		limit = 0
 	}
@@ -93,6 +128,11 @@ func (self *DiscordChannelUnit) FetchMessages(limit int) ([]IDiscordMessageUnit,
 	return result, nil
 }
 
+// GetLastMassage finds and returns the latest message in the channel.
+//
+// Returns the message if found, otherwise an error.
+//
+// See: [DiscordMessageUnit]
 func (self *DiscordChannelUnit) GetLastMessage() (IDiscordMessageUnit, error) {
 	messages, err := self.FetchMessages(100)
 	if err != nil {
@@ -106,6 +146,14 @@ func (self *DiscordChannelUnit) GetLastMessage() (IDiscordMessageUnit, error) {
 	return messages[0], nil
 }
 
+// SendMessage sends a message in the channel.
+//
+// Parameters:
+//   message - The content of the message to send.
+//
+// Returns the sent message on success, otherwise an error.
+//
+// See: [DiscordMessageUnit]
 func (self *DiscordChannelUnit) SendMessage(message string) (IDiscordMessageUnit, error) {
 	msg, err := self.discord.session.ChannelMessageSend(self.channel.ID, message)
 	if err != nil {
@@ -118,6 +166,14 @@ func (self *DiscordChannelUnit) SendMessage(message string) (IDiscordMessageUnit
 	}, nil
 }
 
+// SendMessageOptions sends a message in the channel with options.
+//
+// Parameters:
+//   options - The message options for the message to send.
+//
+// Returns the sent message on success, otherwise an error.
+//
+// See: [DiscordMessageUnit]
 func (self *DiscordChannelUnit) SendMessageOptions(options DiscordMessageSend) (IDiscordMessageUnit, error) {
 	msg, err := self.discord.session.ChannelMessageSendComplex(self.channel.ID, options.Build())
 	if err != nil {
@@ -130,6 +186,9 @@ func (self *DiscordChannelUnit) SendMessageOptions(options DiscordMessageSend) (
 	}, nil
 }
 
+// SendTyping sends the typing animation to users in the channel.
+//
+// Returns an error on failure.
 func (self *DiscordChannelUnit) SendTyping() error {
 	return self.discord.session.ChannelTyping(self.channel.ID)
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// Build turns [DiscordMessageSend] into [discordgo.MessageSend].
 func (self *DiscordMessageSend) Build() *discordgo.MessageSend {
 	var reference *discordgo.MessageReference = nil
 	if self.Reference != nil {
@@ -33,6 +34,7 @@ func (self *DiscordMessageSend) Build() *discordgo.MessageSend {
 	}
 }
 
+// Build turns [DiscordMessageEdit] into [discordgo.MessageEdit].
 func (self *DiscordMessageEdit) Build() *discordgo.MessageEdit {
 	var embeds *[]*discordgo.MessageEmbed = nil
 
@@ -55,6 +57,7 @@ func (self *DiscordMessageEdit) Build() *discordgo.MessageEdit {
 	}
 }
 
+// Build turns [DiscordEmbed] into [discordgo.MessageEmbed].
 func (self *DiscordEmbed) Build() *discordgo.MessageEmbed {
 	timestamp := ""
 	if self.Timestamp != nil {
@@ -75,6 +78,7 @@ func (self *DiscordEmbed) Build() *discordgo.MessageEmbed {
 	}
 }
 
+// Build turns [DiscordEmbedFooter] into [discordgo.MessageEmbedFooter].
 func (self *DiscordEmbedFooter) Build() *discordgo.MessageEmbedFooter {
 	return &discordgo.MessageEmbedFooter{
 		Text: self.Text,
@@ -82,12 +86,14 @@ func (self *DiscordEmbedFooter) Build() *discordgo.MessageEmbedFooter {
 	}
 }
 
+// Build turns [DiscordEmbedImage] into [discordgo.MessageEmbedImage].
 func (self *DiscordEmbedImage) Build() *discordgo.MessageEmbedImage {
 	return &discordgo.MessageEmbedImage{
 		URL: self.URL,
 	}
 }
 
+// Build turns [DiscordEmbedField] into [discordgo.MessageEmbedField].
 func (self *DiscordEmbedField) Build() *discordgo.MessageEmbedField {
 	return &discordgo.MessageEmbedField{
 		Name: self.Name,
@@ -96,6 +102,7 @@ func (self *DiscordEmbedField) Build() *discordgo.MessageEmbedField {
 	}
 }
 
+// Build turns [DiscordAttachment] into [discordgo.File].
 func (self *DiscordAttachment) Build() *discordgo.File {
 	return &discordgo.File{
 		Name: self.Name,
@@ -103,6 +110,7 @@ func (self *DiscordAttachment) Build() *discordgo.File {
 	}
 }
 
+// Build turns [DiscordAllowedMentions] into [discordgo.MessageAllowedMentions].
 func (self *DiscordAllowedMentions) Build() *discordgo.MessageAllowedMentions {
 	result := &discordgo.MessageAllowedMentions{}
 	parse := make([]discordgo.AllowedMentionType, 0, 3)
@@ -126,6 +134,7 @@ func (self *DiscordAllowedMentions) Build() *discordgo.MessageAllowedMentions {
 	return result
 }
 
+// convertAll maps a slice of [T] into a slice of [U] using a mapper function.
 func convertAll[T any, U any](list []T, fn func(T)U) []U {
 	result := make([]U, len(list))
 
