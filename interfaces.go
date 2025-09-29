@@ -36,6 +36,8 @@ type IDiscordInteractionUnit interface {
 	Discord() IDiscordUnit
 	Native() *discordgo.InteractionCreate
 
+	User() IDiscordUserUnit
+
 	DeferReply() error
 	Reply(message string) error
 	EditReply(message *string) error
@@ -111,6 +113,7 @@ type IDiscordMessageUnit interface {
 	Native() *discordgo.Message
 
 	Channel() IDiscordChannelUnit
+	Content() string
 
 	Author() IDiscordUserUnit
 	Timestamp() time.Time

@@ -16,6 +16,14 @@ func (self *DiscordInteractionUnit) Native() *discordgo.InteractionCreate {
 	return self.interaction
 }
 
+// User returns the [DiscordUserUnit] instance of the command sender.
+func (self *DiscordInteractionUnit) User() IDiscordUserUnit {
+	return &DiscordUserUnit{
+		discord: self.discord,
+		user: self.interaction.User,
+	}
+}
+
 // DeferReply defers the reply, giving more time before replying to the command.
 //
 // Typically discord requires a response within 3 seconds. Defer allows a delay of this.

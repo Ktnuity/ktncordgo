@@ -35,6 +35,11 @@ func (self *DiscordMessageUnit) Channel() IDiscordChannelUnit {
 	}
 }
 
+// Content returns the text content of the message.
+func (self *DiscordMessageUnit) Content() string {
+	return self.message.Content
+}
+
 // Author returns the sender of the message.
 //
 // See: [DiscordUserUnit]
