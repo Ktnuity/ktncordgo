@@ -13,7 +13,7 @@ func (self *DiscordInteractionUnit) Discord() IDiscordUnit {
 	return self.discord
 }
 
-// Native returns the underlying [discorgo.User] object.
+// Native returns the underlying [discordgo.User] object.
 //
 // See: [discordgo.InteractionCreate]
 func (self *DiscordInteractionUnit) Native() *discordgo.InteractionCreate {

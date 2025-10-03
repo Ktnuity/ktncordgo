@@ -73,7 +73,7 @@ func (self *DiscordGuildUnit) IsOwner() bool {
 // GetChannels returns the channels available in the discord guild.
 // Returns an error if there's an issure with finding channels.
 //
-// See [DiscordChannelUnit]
+// See: [DiscordChannelUnit]
 // See: [discordgo.Session.GuildChannels]
 func (self *DiscordGuildUnit) GetChannels() ([]IDiscordChannelUnit, error) {
 	chans, err := self.discord.session.GuildChannels(self.guild.ID)
