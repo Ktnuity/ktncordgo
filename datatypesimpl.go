@@ -36,6 +36,16 @@ func (self *DiscordMessageSend) Build() *discordgo.MessageSend {
 	}
 }
 
+func (self *DiscordMessageSend) ToEdit() *DiscordMessageEdit {
+	if self == nil { return nil }
+
+	return &DiscordMessageEdit{
+		Content: &self.Content,
+		embeds: &self.Embeds,
+		AllowedMentions: self.AllowedMentions,
+	}
+}
+
 // Build turns [DiscordMessageEdit] into [discordgo.MessageEdit].
 func (self *DiscordMessageEdit) Build() *discordgo.MessageEdit {
 	if self == nil { return nil }
@@ -57,6 +67,29 @@ func (self *DiscordMessageEdit) Build() *discordgo.MessageEdit {
 		Content: self.Content,
 		Embeds: embeds,
 		AllowedMentions: mentions,
+	}
+}
+
+func (self *DiscordMessageEdit) ToSend() *DiscordMessageSend {
+	if self == nil { return nil }
+
+	content := ""
+	if self.Content != nil { content = *self.Content }
+
+	embeds := make([]*DiscordEmbed, 0, 4)
+	if self.embeds != nil {
+		for _, e := range *self.embeds {
+			embeds = append(embeds, e)
+		}
+	}
+
+	return &DiscordMessageSend{
+		Content: content,
+		Embeds: embeds,
+		TTS: false,
+		Attachments: make([]*DiscordAttachment, 0),
+		AllowedMentions: self.AllowedMentions,
+		Reference: nil,
 	}
 }
 
