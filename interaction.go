@@ -7,11 +7,15 @@ import (
 )
 
 // Discord returns the parent [DiscordUnit] object, the root of [ktncordgo].
+//
+// See: [DiscordUnit]
 func (self *DiscordInteractionUnit) Discord() IDiscordUnit {
 	return self.discord
 }
 
 // Native returns the underlying [discorgo.User] object.
+//
+// See: [discordgo.InteractionCreate]
 func (self *DiscordInteractionUnit) Native() *discordgo.InteractionCreate {
 	return self.interaction
 }
@@ -30,6 +34,11 @@ func (self *DiscordInteractionUnit) User() IDiscordUserUnit {
 // This cannot be followed by a [Reply] call and instead requires a [EditReply] call to follow up.
 //
 // Returns an error on failure.
+//
+// See: [discordgo.Session.InteractionRespond]
+// See: [discordgo.InteractionCreate.Interaction]
+// See: [discordgo.InteractionResponse]
+// See: [discordgo.InteractionResponseDeferredChannelMessageWithSource]
 func (self *DiscordInteractionUnit) DeferReply() error {
 	return self.discord.session.InteractionRespond(self.interaction.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseDeferredChannelMessageWithSource,
@@ -42,6 +51,12 @@ func (self *DiscordInteractionUnit) DeferReply() error {
 //   message - The text to include in the interaction response.
 //
 // Returns an error on failure.
+//
+// See: [discordgo.Session.InteractionRespond]
+// See: [discordgo.InteractionCreate.Interaction]
+// See: [discordgo.InteractionResponse]
+// See: [discordgo.InteractionResponseData]
+// See: [discordgo.InteractionResponseChannelMessageWithSource]
 func (self *DiscordInteractionUnit) Reply(message string) error {
 	return self.discord.session.InteractionRespond(self.interaction.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
@@ -57,6 +72,10 @@ func (self *DiscordInteractionUnit) Reply(message string) error {
 //   message - Reference to the new content to use when editing response.
 //
 // Returns an error on failure.
+//
+// See: [discordgo.Session.InteractionResponseEdit]
+// See: [discordgo.InteractionCreate.Interaction]
+// See: [discordgo.WebhookEdit]
 func (self *DiscordInteractionUnit) EditReply(message *string) error {
 	_, err := self.discord.session.InteractionResponseEdit(self.interaction.Interaction, &discordgo.WebhookEdit{
 		Content: message,
@@ -66,6 +85,9 @@ func (self *DiscordInteractionUnit) EditReply(message *string) error {
 }
 
 // CommandName returns the name/label of the slash command.
+//
+// See: [discordgo.InteractionCreate.ApplicationCommandData]
+// See: [discordgo.ApplicationCommandInteractionData.Name]
 func (self *DiscordInteractionUnit) CommandName() string {
 	return self.interaction.ApplicationCommandData().Name
 }
@@ -76,6 +98,9 @@ func (self *DiscordInteractionUnit) CommandName() string {
 //   name - The name of the command to test against.
 //
 // Returns true if the command name matches.
+//
+// See: [discordgo.InteractionCreate.ApplicationCommandData]
+// See: [discordgo.ApplicationCommandInteractionData.Name]
 func (self *DiscordInteractionUnit) IsCommandName(name string) bool {
 	return self.interaction.ApplicationCommandData().Name == name
 }
@@ -89,6 +114,7 @@ func (self *DiscordInteractionUnit) IsCommandName(name string) bool {
 // Returns true if the command matched.
 //
 // See: [IDiscordCommandFn]
+// See: [IsCommandName]
 func (self *DiscordInteractionUnit) DispatchEvent(name string, callback IDiscordCommandFn) bool {
 	if !self.IsCommandName(name) {
 		return false

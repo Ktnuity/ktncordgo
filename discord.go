@@ -10,6 +10,11 @@ import (
 // CreateDiscordUnit takes a discord token and creates a [DiscordUnit] instance.
 //
 // Returns the create instance on success, otherwise an error.
+//
+// See: [DiscordUnit]
+// See: [discordgo.Session]
+// See: [discordgo.Identify]
+// See: [discordgo.Intents]
 func CreateDiscordUnit(token string) (IDiscordUnit, error) {
 	session, err := discordgo.New("Bot " + token)
 	if err != nil {
@@ -27,6 +32,9 @@ func CreateDiscordUnit(token string) (IDiscordUnit, error) {
 //   commands - a slice of [discordgo.ApplicationCommand] references.
 //
 // Returns an error on failure.
+//
+// See: [discordgo.Session.Open]
+// See: [discordgo.Session.ApplicationCommandCreate]
 func (self *DiscordUnit) Start(commands []*discordgo.ApplicationCommand) error {
 	err := self.session.Open()
 	if err != nil {
@@ -45,6 +53,8 @@ func (self *DiscordUnit) Start(commands []*discordgo.ApplicationCommand) error {
 }
 
 // Stop stops the discord session.
+//
+// See: [discordgo.Session.Close]
 func (self *DiscordUnit) Stop() {
 	self.session.Close()
 }
@@ -64,6 +74,8 @@ func NewDiscordUnit(session *discordgo.Session) IDiscordUnit {
 // Session returns a reference to the underlying [discordgo.Session] object.
 //
 // Returns the [discordgo.Session] reference.
+//
+// See: [discordgo.Session]
 func (self *DiscordUnit) Session() *discordgo.Session {
 	return self.session
 }
@@ -120,6 +132,7 @@ func (self *DiscordUnit) OnMessageCreate(callback func (IDiscordUnit, IDiscordMe
 // Returns the user object if found, otherwise an error.
 // 
 // See: [DiscordUserUnit]
+// See: [discordgo.Session.User]
 func (self *DiscordUnit) GetUser(userId string) (IDiscordUserUnit, error) {
 	user, err := self.session.User(userId)
 	if err != nil {
@@ -140,6 +153,7 @@ func (self *DiscordUnit) GetUser(userId string) (IDiscordUserUnit, error) {
 // Returns the channel object if found, otherwise an error.
 //
 // See: [DiscordChannelUnit]
+// See: [discordgo.Session.Channel]
 func (self *DiscordUnit) GetChannel(channelId string) (IDiscordChannelUnit, error) {
 	channel, err := self.session.Channel(channelId)
 	if err != nil {
@@ -160,6 +174,7 @@ func (self *DiscordUnit) GetChannel(channelId string) (IDiscordChannelUnit, erro
 // Returns the guild object if found, otherwise an error.
 //
 // See: [DiscordGuildUnit]
+// See: [discordgo.Session.Guild]
 func (self *DiscordUnit) GetGuild(guildId string) (IDiscordGuildUnit, error) {
 	guild, err := self.session.Guild(guildId)
 	if err != nil {
@@ -177,6 +192,8 @@ func (self *DiscordUnit) GetGuild(guildId string) (IDiscordGuildUnit, error) {
 // Returns the user instance of present, otherwise nil.
 //
 // See: [DiscordUserUnit]
+// See: [discordgo.Session.State]
+// See: [discordgo.Session.State.User]
 func (self *DiscordUnit) BotUser() IDiscordUserUnit {
 	user := self.session.State.User
 
@@ -193,6 +210,7 @@ func (self *DiscordUnit) BotUser() IDiscordUserUnit {
 // Snowflake returns the ID of the discord unit's bot user.
 //
 // See: [DiscordUserUnit.Snowflake]
+// See: [DiscordUnit.BotUser]
 func (self *DiscordUnit) BotSnowflake() string {
 	return self.BotUser().Snowflake()
 }
@@ -200,7 +218,6 @@ func (self *DiscordUnit) BotSnowflake() string {
 // Id returns the ID of the discord unit's bot user
 //
 // See: [DiscordUnit.Snowflake]
-// See: [DiscordUserUnit.Id]
 func (self *DiscordUnit) BotId() string {
 	return self.BotUser().Id()
 }

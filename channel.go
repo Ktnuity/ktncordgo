@@ -8,16 +8,22 @@ import (
 )
 
 // Discord returns the parent [DiscordUnit] object, the root of [ktncordgo].
+//
+// See: [DiscordUnit]
 func (self *DiscordChannelUnit) Discord() IDiscordUnit {
 	return self.discord
 }
 
 // Native returns the underlying [discordgo.Channel] object.
+//
+// See: [discordgo.Channel]
 func (self *DiscordChannelUnit) Native() *discordgo.Channel {
 	return self.channel
 }
 
 // Snowflake returns the ID of the discord channel.
+//
+// See: [discordgo.Channel.ID]
 func (self *DiscordChannelUnit) Snowflake() string {
 	return self.channel.ID
 }
@@ -32,26 +38,35 @@ func (self *DiscordChannelUnit) Id() string {
 // Guild returns the Guild that the current channel is in.
 //
 // See: [DiscordGuildUnit]
+// See: [DiscordUnit.GetGuild]
 func (self *DiscordChannelUnit) Guild() (IDiscordGuildUnit, error) {
 	return self.discord.GetGuild(self.channel.GuildID)
 }
 
 // Name returns the name of the current channel.
+//
+// See: [discordgo.Channel.Name]
 func (self *DiscordChannelUnit) Name() string {
 	return self.channel.Name
 }
 
 // Topic returns the topic of the current channel.
+//
+// See: [discordgo.Channel.Topic]
 func (self *DiscordChannelUnit) Topic() string {
 	return self.channel.Topic
 }
 
 // Position returns the position of the current channel in the channel list.
+//
+// See: [discordgo.Channel.Position]
 func (self *DiscordChannelUnit) Position() int {
 	return self.channel.Position
 }
 
 // NSFW returns true if the channel is marked as a NSFW channel.
+//
+// See: [discordgo.Channel.NSFW]
 func (self *DiscordChannelUnit) NSFW() bool {
 	return self.channel.NSFW
 }
@@ -59,6 +74,7 @@ func (self *DiscordChannelUnit) NSFW() bool {
 // Type returns the type of the channel.
 //
 // See: [discordgo.ChannelType]
+// See: [discordgo.Channel.Type]
 func (self *DiscordChannelUnit) Type() discordgo.ChannelType {
 	return self.channel.Type
 }
@@ -66,6 +82,7 @@ func (self *DiscordChannelUnit) Type() discordgo.ChannelType {
 // Flags returns the flags of the channel.
 //
 // See: [discordgo.ChannelFlags]
+// See: [discordgo.Channel.Flags]
 func (self *DiscordChannelUnit) Flags() discordgo.ChannelFlags {
 	return self.channel.Flags
 }
@@ -78,6 +95,7 @@ func (self *DiscordChannelUnit) Flags() discordgo.ChannelFlags {
 // Returns the [DiscordMessageUnit] of the message if found, otherwise an error.
 //
 // See: [DiscordMessageUnit]
+// See: [discordgo.Session.ChannelMessage]
 func (self *DiscordChannelUnit) FetchMessage(messageId string) (IDiscordMessageUnit, error) {
 	msg, err := self.discord.session.ChannelMessage(self.channel.ID, messageId)
 	if err != nil {
@@ -98,6 +116,7 @@ func (self *DiscordChannelUnit) FetchMessage(messageId string) (IDiscordMessageU
 // Returns a slice of the found messages on success, otherwise an error.
 //
 // See: [DiscordMessageUnit]
+// See: [discordgo.Session.ChannelMessages]
 func (self *DiscordChannelUnit) FetchMessages(limit int) ([]IDiscordMessageUnit, error) {
 	if limit > 100 {
 		log.Printf("FetchMessages limit '%d' is larger than max allowed '%d'\n", limit, 100)
@@ -133,6 +152,7 @@ func (self *DiscordChannelUnit) FetchMessages(limit int) ([]IDiscordMessageUnit,
 // Returns the message if found, otherwise an error.
 //
 // See: [DiscordMessageUnit]
+// See: [DiscordChannelUnit.FetchMessages]
 func (self *DiscordChannelUnit) GetLastMessage() (IDiscordMessageUnit, error) {
 	messages, err := self.FetchMessages(100)
 	if err != nil {
@@ -154,6 +174,7 @@ func (self *DiscordChannelUnit) GetLastMessage() (IDiscordMessageUnit, error) {
 // Returns the sent message on success, otherwise an error.
 //
 // See: [DiscordMessageUnit]
+// See: [discordgo.Session.ChannelMessageSend]
 func (self *DiscordChannelUnit) SendMessage(message string) (IDiscordMessageUnit, error) {
 	msg, err := self.discord.session.ChannelMessageSend(self.channel.ID, message)
 	if err != nil {
@@ -174,6 +195,7 @@ func (self *DiscordChannelUnit) SendMessage(message string) (IDiscordMessageUnit
 // Returns the sent message on success, otherwise an error.
 //
 // See: [DiscordMessageUnit]
+// See: [discordgo.Session.ChannelMessageSendComplex]
 func (self *DiscordChannelUnit) SendMessageOptions(options DiscordMessageSend) (IDiscordMessageUnit, error) {
 	msg, err := self.discord.session.ChannelMessageSendComplex(self.channel.ID, options.Build())
 	if err != nil {
@@ -189,6 +211,8 @@ func (self *DiscordChannelUnit) SendMessageOptions(options DiscordMessageSend) (
 // SendTyping sends the typing animation to users in the channel.
 //
 // Returns an error on failure.
+//
+// See: [discordgo.Session.ChannelTyping]
 func (self *DiscordChannelUnit) SendTyping() error {
 	return self.discord.session.ChannelTyping(self.channel.ID)
 }

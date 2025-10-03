@@ -8,6 +8,8 @@ import (
 )
 
 // Build turns [DiscordMessageSend] into [discordgo.MessageSend].
+//
+// See: [discordgo.MessageSend]
 func (self *DiscordMessageSend) Build() *discordgo.MessageSend {
 	if self == nil { return nil }
 
@@ -36,6 +38,9 @@ func (self *DiscordMessageSend) Build() *discordgo.MessageSend {
 	}
 }
 
+// ToEdit turns [DiscordMessageSend] into [DiscordMessageEdit].
+//
+// See: [DiscordMessageEdit]
 func (self *DiscordMessageSend) ToEdit() *DiscordMessageEdit {
 	if self == nil { return nil }
 
@@ -47,6 +52,8 @@ func (self *DiscordMessageSend) ToEdit() *DiscordMessageEdit {
 }
 
 // Build turns [DiscordMessageEdit] into [discordgo.MessageEdit].
+//
+// See: [discordgo.MessageEdit]
 func (self *DiscordMessageEdit) Build() *discordgo.MessageEdit {
 	if self == nil { return nil }
 	var embeds *[]*discordgo.MessageEmbed = nil
@@ -70,6 +77,10 @@ func (self *DiscordMessageEdit) Build() *discordgo.MessageEdit {
 	}
 }
 
+// ToSend turns [DiscordMessageEdit] into [DiscordMessageSend].
+// Note: Sets (TTS: false, Attachments: [], Reference: nil).
+//
+// See: [DiscordMessageSend]
 func (self *DiscordMessageEdit) ToSend() *DiscordMessageSend {
 	if self == nil { return nil }
 
@@ -94,6 +105,8 @@ func (self *DiscordMessageEdit) ToSend() *DiscordMessageSend {
 }
 
 // Build turns [DiscordEmbed] into [discordgo.MessageEmbed].
+//
+// See: [discordgo.MessageEmbed]
 func (self *DiscordEmbed) Build() *discordgo.MessageEmbed {
 	if self == nil { return nil }
 	timestamp := ""
@@ -116,6 +129,8 @@ func (self *DiscordEmbed) Build() *discordgo.MessageEmbed {
 }
 
 // Build turns [DiscordEmbedFooter] into [discordgo.MessageEmbedFooter].
+//
+// See: [discordgo.MessageEmbedFooter]
 func (self *DiscordEmbedFooter) Build() *discordgo.MessageEmbedFooter {
 	if self == nil { return nil }
 	return &discordgo.MessageEmbedFooter{
@@ -125,6 +140,8 @@ func (self *DiscordEmbedFooter) Build() *discordgo.MessageEmbedFooter {
 }
 
 // Build turns [DiscordEmbedImage] into [discordgo.MessageEmbedImage].
+//
+// See: [discordgo.MessageEmbedImage]
 func (self *DiscordEmbedImage) Build() *discordgo.MessageEmbedImage {
 	if self == nil { return nil }
 	return &discordgo.MessageEmbedImage{
@@ -133,6 +150,8 @@ func (self *DiscordEmbedImage) Build() *discordgo.MessageEmbedImage {
 }
 
 // Build turns [DiscordEmbedField] into [discordgo.MessageEmbedField].
+//
+// See: [discordgo.MessageEmbedField]
 func (self *DiscordEmbedField) Build() *discordgo.MessageEmbedField {
 	if self == nil { return nil }
 	return &discordgo.MessageEmbedField{
@@ -143,6 +162,8 @@ func (self *DiscordEmbedField) Build() *discordgo.MessageEmbedField {
 }
 
 // Build turns [DiscordAttachment] into [discordgo.File].
+//
+// See: [discordgo.File]
 func (self *DiscordAttachment) Build() *discordgo.File {
 	if self == nil { return nil }
 	return &discordgo.File{
@@ -152,6 +173,8 @@ func (self *DiscordAttachment) Build() *discordgo.File {
 }
 
 // Build turns [DiscordAllowedMentions] into [discordgo.MessageAllowedMentions].
+//
+// See: [discordgo.MessageAllowedMentions]
 func (self *DiscordAllowedMentions) Build() *discordgo.MessageAllowedMentions {
 	if self == nil { return nil }
 

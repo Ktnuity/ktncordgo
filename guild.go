@@ -8,16 +8,22 @@ import (
 )
 
 // Discord returns the parent [DiscordUnit] object, the root of [ktncordgo].
+//
+// See: [DiscordUnit]
 func (self *DiscordGuildUnit) Discord() IDiscordUnit {
 	return self.discord
 }
 
 // Native returns the underlying [discordgo.Guild] object.
+//
+// See: [discordgo.Guild]
 func (self *DiscordGuildUnit) Native() *discordgo.Guild {
 	return self.guild
 }
 
 // Snowflake returns the ID of the discord guild.
+//
+// See: [discordgo.Guild.ID]
 func (self *DiscordGuildUnit) Snowflake() string {
 	return self.guild.ID
 }
@@ -30,26 +36,36 @@ func (self *DiscordGuildUnit) Id() string {
 }
 
 // Name returns the name of the discord guild.
+//
+// See: [discordgo.Guild.Name]
 func (self *DiscordGuildUnit) Name() string {
 	return self.guild.Name
 }
 
 // Description returns the title/description of the discord guild.
+//
+// See: [discordgo.Guild.Description]
 func (self *DiscordGuildUnit) Description() string {
 	return self.guild.Description
 }
 
 // Icon returns the icon URL of the discord guild.
+//
+// See: [discordgo.Guild.Icon]
 func (self *DiscordGuildUnit) Icon() string {
 	return self.guild.Icon
 }
 
 // Region returns the voice channel region used in the discord guild.
+//
+// See: [discordgo.Guild.Region]
 func (self *DiscordGuildUnit) Region() string {
 	return self.guild.Region
 }
 
 // IsOwner returns [true] if the bot user of the underlying [DiscordUnit] is the owner of the discord guild.
+//
+// See: [discordgo.Guild.Owner]
 func (self *DiscordGuildUnit) IsOwner() bool {
 	return self.guild.Owner
 }
@@ -58,6 +74,7 @@ func (self *DiscordGuildUnit) IsOwner() bool {
 // Returns an error if there's an issure with finding channels.
 //
 // See [DiscordChannelUnit]
+// See: [discordgo.Session.GuildChannels]
 func (self *DiscordGuildUnit) GetChannels() ([]IDiscordChannelUnit, error) {
 	chans, err := self.discord.session.GuildChannels(self.guild.ID)
 	if err != nil {
@@ -84,6 +101,7 @@ func (self *DiscordGuildUnit) GetChannels() ([]IDiscordChannelUnit, error) {
 // Returns the channel if found, otherwise an error.
 //
 // See: [DiscordChannelUnit]
+// See: [DiscordGuildUnit.GetChannels]
 func (self *DiscordGuildUnit) GetChannel(channelId string) (IDiscordChannelUnit, error) {
 	channels, err := self.GetChannels()
 	if err != nil {
@@ -103,6 +121,8 @@ func (self *DiscordGuildUnit) GetChannel(channelId string) (IDiscordChannelUnit,
 // Note: This is an iterative process, be vary of usage in larger servers.
 //
 // Returns number of members if successful, otherwise an error.
+//
+// See: [discordgo.Session.GuildMembers]
 func (self *DiscordGuildUnit) GetMemberCount() (int, error) {
 	var count int = 0
 	var last string = ""

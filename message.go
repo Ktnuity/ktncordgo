@@ -10,16 +10,22 @@ import (
 )
 
 // Discord returns the parent [DiscordUnit] object, the root of [ktncordgo].
+//
+// See: [DiscordUnit]
 func (self *DiscordMessageUnit) Discord() IDiscordUnit {
 	return self.discord
 }
 
 // Native returns the underlying [discordgo.Message] object.
+//
+// See: [discordgo.Message]
 func (self *DiscordMessageUnit) Native() *discordgo.Message {
 	return self.message
 }
 
 // Snowflake returns the ID of the discord message.
+//
+// See: [discordgo.Message.ID]
 func (self *DiscordMessageUnit) Snowflake() string {
 	return self.message.ID
 }
@@ -34,6 +40,9 @@ func (self *DiscordMessageUnit) Id() string {
 // Channel returns the channel the message was sent in.
 //
 // See: [DiscordChannelUnit]
+// See: [discordgo.Session.Channel]
+// See: [discordgo.Message.ChannelID]
+// See: [discordgo.Message.ID]
 func (self *DiscordMessageUnit) Channel() IDiscordChannelUnit {
 	channel, err := self.discord.session.Channel(self.message.ChannelID)
 	if err != nil {
@@ -48,6 +57,8 @@ func (self *DiscordMessageUnit) Channel() IDiscordChannelUnit {
 }
 
 // Content returns the text content of the message.
+// 
+// See: [discordgo.Message.Content]
 func (self *DiscordMessageUnit) Content() string {
 	return self.message.Content
 }
@@ -55,6 +66,7 @@ func (self *DiscordMessageUnit) Content() string {
 // Author returns the sender of the message.
 //
 // See: [DiscordUserUnit]
+// See: [discordgo.Message.Author]
 func (self *DiscordMessageUnit) Author() IDiscordUserUnit {
 	if self.message.Author == nil {
 		return nil
@@ -67,12 +79,16 @@ func (self *DiscordMessageUnit) Author() IDiscordUserUnit {
 }
 
 // Timestamp returns the [time.Time] when the message was sent.
+//
+// See: [discordgo.Message.Timestamp]
 func (self *DiscordMessageUnit) Timestamp() time.Time {
 	return self.message.Timestamp
 }
 
 // EditedTimestamp returns the [time.Time] when the message was sent.
 // It returns nil if the message was never edited.
+//
+// See: [discordgo.Message.EditedTimestamp]
 func (self *DiscordMessageUnit) EditedTimestamp() *time.Time {
 	return self.message.EditedTimestamp
 }
@@ -80,6 +96,7 @@ func (self *DiscordMessageUnit) EditedTimestamp() *time.Time {
 // Mentions returns the users that have been mentioned in the message.
 //
 // See: [DiscordUserUnit]
+// See: [discordgo.Message.Mentions]
 func (self *DiscordMessageUnit) Mentions() []IDiscordUserUnit {
 	result := make([]IDiscordUserUnit, len(self.message.Mentions))
 
@@ -99,6 +116,10 @@ func (self *DiscordMessageUnit) Mentions() []IDiscordUserUnit {
 //   message - the message content to apply with the edit.
 //
 // Returns an error upon failure.
+//
+// See: [discordgo.Session.ChannelMessageEdit]
+// See: [discordgo.Message.ChannelID]
+// See: [discordgo.Message.ID]
 func (self *DiscordMessageUnit) Edit(message string) error {
 	msg, err := self.discord.session.ChannelMessageEdit(self.message.ChannelID, self.message.ID, message)
 
@@ -116,6 +137,11 @@ func (self *DiscordMessageUnit) Edit(message string) error {
 //   options - the message content to apply with the edit.
 //
 // Returns an error upon failure.
+//
+// See: [DiscordMessageEdit]
+// See: [discordgo.Session.ChannelMessageEditComplex]
+// See: [discordgo.Message.ChannelID]
+// See: [discordgo.Message.ID]
 func (self *DiscordMessageUnit) EditOptions(options DiscordMessageEdit) error {
 	opts := options.Build()
 
@@ -134,6 +160,10 @@ func (self *DiscordMessageUnit) EditOptions(options DiscordMessageEdit) error {
 // Crosspost performs a crosspost for the message. This only works in announcement type discord channels.
 //
 // Returns an error upon failure.
+//
+// See: [discordgo.Session.ChannelMessageCrosspost]
+// See: [discordgo.Message.ChannelID]
+// See: [discordgo.Message.ID]
 func (self *DiscordMessageUnit) Crosspost() error {
 	msg, err := self.discord.session.ChannelMessageCrosspost(self.message.ChannelID, self.message.ID)
 
@@ -148,6 +178,10 @@ func (self *DiscordMessageUnit) Crosspost() error {
 // Delete deletes the current message. This requires permission to manage messages or that the underlying [DiscordUnit] object user sent this message.
 //
 // Returns an error upon failure.
+//
+// See: [discordgo.Session.ChannelMessageDelete]
+// See: [discordgo.Message.ChannelID]
+// See: [discordgo.Message.ID]
 func (self *DiscordMessageUnit) Delete() error {
 	return self.discord.session.ChannelMessageDelete(self.message.ChannelID, self.message.ID)
 }
@@ -158,6 +192,13 @@ func (self *DiscordMessageUnit) Delete() error {
 //   message - the message content to use in the reply.
 //
 // Returns an error upon failure.
+//
+// See: [discordgo.Session.ChannelMessageSendReply]
+// See: [discordgo.Message.GuildID]
+// See: [discordgo.Message.ChannelID]
+// See: [discordgo.Message.ID]
+// See: [discordgo.MessageReference]
+// See: [discordgo.MessageReferenceTypeDefault]
 func (self *DiscordMessageUnit) Reply(message string) (IDiscordMessageUnit, error) {
 	msg, err := self.discord.session.ChannelMessageSendReply(self.message.ChannelID, message, &discordgo.MessageReference{
 		Type: discordgo.MessageReferenceTypeDefault,
