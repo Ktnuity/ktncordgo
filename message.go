@@ -19,6 +19,18 @@ func (self *DiscordMessageUnit) Native() *discordgo.Message {
 	return self.message
 }
 
+// Snowflake returns the ID of the discord message.
+func (self *DiscordMessageUnit) Snowflake() string {
+	return self.message.ID
+}
+
+// Id returns the ID of the discord message.
+//
+// See: [DiscordMessageUnit.Snowflake]
+func (self *DiscordMessageUnit) Id() string {
+	return self.message.ID
+}
+
 // Channel returns the channel the message was sent in.
 //
 // See: [DiscordChannelUnit]

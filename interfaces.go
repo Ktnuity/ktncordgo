@@ -24,6 +24,8 @@ type IDiscordUnit interface {
 	GetGuild(string) (IDiscordGuildUnit, error)
 
 	BotUser() IDiscordUserUnit
+	BotSnowflake() string
+	BotId() string
 }
 
 // IDiscordCommandFn is a slash command handler callback function definition.
@@ -112,6 +114,11 @@ type IDiscordMessageUnit interface {
 	Discord() IDiscordUnit
 	Native() *discordgo.Message
 
+	// Base
+	Snowflake() string
+	Id() string
+
+	// Information
 	Channel() IDiscordChannelUnit
 	Content() string
 

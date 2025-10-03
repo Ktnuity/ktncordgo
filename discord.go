@@ -189,3 +189,18 @@ func (self *DiscordUnit) BotUser() IDiscordUserUnit {
 		user: user,
 	}
 }
+
+// Snowflake gets the ID of the discord unit's bot user.
+//
+// See: [DiscordUserUnit.Snowflake]
+func (self *DiscordUnit) BotSnowflake() string {
+	return self.BotUser().Snowflake()
+}
+
+// Id gets the ID of the discord unit's bot user
+//
+// See: [DiscordUnit.Snowflake]
+// See: [DiscordUserUnit.Id]
+func (self *DiscordUnit) BotId() string {
+	return self.BotUser().Id()
+}
