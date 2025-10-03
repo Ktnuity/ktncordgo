@@ -41,7 +41,7 @@ func (self *DiscordMessageSend) ToEdit() *DiscordMessageEdit {
 
 	return &DiscordMessageEdit{
 		Content: &self.Content,
-		embeds: &self.Embeds,
+		Embeds: &self.Embeds,
 		AllowedMentions: self.AllowedMentions,
 	}
 }
@@ -51,8 +51,8 @@ func (self *DiscordMessageEdit) Build() *discordgo.MessageEdit {
 	if self == nil { return nil }
 	var embeds *[]*discordgo.MessageEmbed = nil
 
-	if self.embeds != nil {
-		newEmbeds := convertAll(*self.embeds, func (embed *DiscordEmbed) *discordgo.MessageEmbed {
+	if self.Embeds != nil {
+		newEmbeds := convertAll(*self.Embeds, func (embed *DiscordEmbed) *discordgo.MessageEmbed {
 			return embed.Build()
 		})
 		embeds = &newEmbeds
@@ -77,8 +77,8 @@ func (self *DiscordMessageEdit) ToSend() *DiscordMessageSend {
 	if self.Content != nil { content = *self.Content }
 
 	embeds := make([]*DiscordEmbed, 0, 4)
-	if self.embeds != nil {
-		for _, e := range *self.embeds {
+	if self.Embeds != nil {
+		for _, e := range *self.Embeds {
 			embeds = append(embeds, e)
 		}
 	}

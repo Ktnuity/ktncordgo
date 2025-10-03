@@ -18,7 +18,7 @@ type DiscordMessageSend struct {
 // DiscordMessageEdit contains options used for [DiscordMessageUnit.EditOptions].
 type DiscordMessageEdit struct {
 	Content *string
-	embeds *[]*DiscordEmbed
+	Embeds *[]*DiscordEmbed
 	AllowedMentions *DiscordAllowedMentions
 }
 
