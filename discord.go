@@ -172,7 +172,7 @@ func (self *DiscordUnit) GetGuild(guildId string) (IDiscordGuildUnit, error) {
 	}, nil
 }
 
-// BotUser gets the underlying bot user of the [DiscordUnit] instance.
+// BotUser returns the underlying bot user of the [DiscordUnit] instance.
 //
 // Returns the user instance of present, otherwise nil.
 //
@@ -190,14 +190,14 @@ func (self *DiscordUnit) BotUser() IDiscordUserUnit {
 	}
 }
 
-// Snowflake gets the ID of the discord unit's bot user.
+// Snowflake returns the ID of the discord unit's bot user.
 //
 // See: [DiscordUserUnit.Snowflake]
 func (self *DiscordUnit) BotSnowflake() string {
 	return self.BotUser().Snowflake()
 }
 
-// Id gets the ID of the discord unit's bot user
+// Id returns the ID of the discord unit's bot user
 //
 // See: [DiscordUnit.Snowflake]
 // See: [DiscordUserUnit.Id]

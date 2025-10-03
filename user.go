@@ -2,41 +2,41 @@ package ktncordgo
 
 import "github.com/bwmarrin/discordgo"
 
-// Discord gets the parent [DiscordUnit] object, the root of [ktncordgo].
+// Discord returns the parent [DiscordUnit] object, the root of [ktncordgo].
 func (self *DiscordUserUnit) Discord() IDiscordUnit {
 	return self.discord
 }
 
-// Native gets the underlying [discordgo.User] object.
+// Native returns the underlying [discordgo.User] object.
 func (self *DiscordUserUnit) Native() *discordgo.User {
 	return self.user
 }
 
-// Snowflake gets the ID of the discord user.
+// Snowflake returns the ID of the discord user.
 func (self *DiscordUserUnit) Snowflake() string {
 	return self.user.ID
 }
 
-// Id gets the ID of the discord user.
+// Id returns the ID of the discord user.
 //
 // See: [DiscordUserUnit.Snowflake]
 func (self *DiscordUserUnit) Id() string {
 	return self.user.ID
 }
 
-// Username gets the username of the discord user.
+// Username returns the username of the discord user.
 func (self *DiscordUserUnit) Username() string {
 	return self.user.Username
 }
 
-// Discriminator gets the 4 Discriminator digs of the discord user.
+// Discriminator returns the 4 Discriminator digs of the discord user.
 // This is no longer used for normal users and is limited to bots.
 // For a normal user this will return "0000".
 func (self *DiscordUserUnit) Discriminator() string {
 	return self.user.Discriminator
 }
 
-// GlobalName gets the global display name of the discord user.
+// GlobalName returns the global display name of the discord user.
 func (self *DiscordUserUnit) GlobalName() string {
 	return self.user.GlobalName
 }
