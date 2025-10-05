@@ -152,6 +152,16 @@ func PrepareEmbed(embed *discordgo.MessageEmbed) *DiscordEmbed {
 	}
 }
 
+func PrepareEmbeds(embeds *[]*discordgo.MessageEmbed) *[]*DiscordEmbed {
+	if embeds == nil { return &[]*DiscordEmbed{} }
+
+	result := convertAll(*embeds, func (embed *discordgo.MessageEmbed) *DiscordEmbed {
+		return PrepareEmbed(embed)
+	})
+
+	return &result
+}
+
 // Build turns [DiscordEmbedFooter] into [discordgo.MessageEmbedFooter].
 //
 // See: [discordgo.MessageEmbedFooter]
