@@ -1,10 +1,11 @@
 package ktncordgo
 
 import (
+	"log"
 	"time"
 
-	"github.com/ktnuity/ktnuitygo"
 	"github.com/bwmarrin/discordgo"
+	"github.com/ktnuity/ktnuitygo"
 )
 
 // Build turns [DiscordMessageSend] into [discordgo.MessageSend].
@@ -128,6 +129,29 @@ func (self *DiscordEmbed) Build() *discordgo.MessageEmbed {
 	}
 }
 
+func PrepareEmbed(embed *discordgo.MessageEmbed) *DiscordEmbed {
+	if embed == nil { return nil }
+
+	var timestamp *time.Time
+	rawTimestamp, err := time.Parse(time.RFC3339, embed.Timestamp)
+	if err != nil {
+		log.Printf("Failed to prepare embed. Could not parse timestamp: %v\n", err)
+	} else {
+		timestamp = &rawTimestamp
+	}
+
+	return &DiscordEmbed{
+		URL: embed.URL,
+		Title: embed.Title,
+		Description: embed.Description,
+		Timestamp: timestamp,
+		Color: embed.Color,
+		Footer: PrepareEmbedFooter(embed.Footer),
+		Image: PrepareEmbedImage(embed.Image),
+		Fields: PrepareEmbedFields(embed.Fields),
+	}
+}
+
 // Build turns [DiscordEmbedFooter] into [discordgo.MessageEmbedFooter].
 //
 // See: [discordgo.MessageEmbedFooter]
@@ -136,6 +160,14 @@ func (self *DiscordEmbedFooter) Build() *discordgo.MessageEmbedFooter {
 	return &discordgo.MessageEmbedFooter{
 		Text: self.Text,
 		IconURL: self.IconURL,
+	}
+}
+
+func PrepareEmbedFooter(footer *discordgo.MessageEmbedFooter) *DiscordEmbedFooter {
+	if footer == nil { return nil }
+	return &DiscordEmbedFooter{
+		Text: footer.Text,
+		IconURL: footer.IconURL,
 	}
 }
 
@@ -149,6 +181,13 @@ func (self *DiscordEmbedImage) Build() *discordgo.MessageEmbedImage {
 	}
 }
 
+func PrepareEmbedImage(image *discordgo.MessageEmbedImage) *DiscordEmbedImage {
+	if image == nil { return nil }
+	return &DiscordEmbedImage{
+		URL: image.URL,
+	}
+}
+
 // Build turns [DiscordEmbedField] into [discordgo.MessageEmbedField].
 //
 // See: [discordgo.MessageEmbedField]
@@ -159,6 +198,26 @@ func (self *DiscordEmbedField) Build() *discordgo.MessageEmbedField {
 		Value: self.Value,
 		Inline: self.Inline,
 	}
+}
+
+func PrepareEmbedField(field *discordgo.MessageEmbedField) *DiscordEmbedField {
+	if field == nil { return nil }
+	return &DiscordEmbedField{
+		Name: field.Name,
+		Value: field.Value,
+		Inline: field.Inline,
+	}
+}
+
+func PrepareEmbedFields(fields []*discordgo.MessageEmbedField) []*DiscordEmbedField {
+	if fields == nil { return []*DiscordEmbedField{} }
+
+	result := make([]*DiscordEmbedField, 0, len(fields))
+	for _, field := range fields {
+		result = append(result, PrepareEmbedField(field))
+	}
+
+	return result
 }
 
 // Build turns [DiscordAttachment] into [discordgo.File].
