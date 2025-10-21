@@ -42,7 +42,9 @@ type IDiscordInteractionUnit interface {
 
 	DeferReply() error
 	Reply(message string) error
+	ReplyOptions(opts DiscordMessageSend) error
 	EditReply(message *string) error
+	EditReplyOptions(opts *DiscordMessageEdit) error
 
 	CommandName() string
 	IsCommandName(name string) bool

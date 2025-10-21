@@ -66,6 +66,45 @@ func (self *DiscordInteractionUnit) Reply(message string) error {
 	})
 }
 
+// ReplyOptions sends a reply to user interaction with advanced options. This cannot be used with [DeferReply].
+//
+// Parameters:
+//   opts - The message options including content, embeds, TTS, attachments, and allowed mentions.
+//
+// Returns an error on failure.
+//
+// See: [DiscordMessageSend]
+// See: [discordgo.Session.InteractionRespond]
+// See: [discordgo.InteractionCreate.Interaction]
+// See: [discordgo.InteractionResponse]
+// See: [discordgo.InteractionResponseData]
+// See: [discordgo.InteractionResponseChannelMessageWithSource]
+func (self *DiscordInteractionUnit) ReplyOptions(opts DiscordMessageSend) error {
+	embeds := convertAll(opts.Embeds, func (embed *DiscordEmbed) *discordgo.MessageEmbed {
+		return embed.Build()
+	})
+
+	files := convertAll(opts.Attachments, func (attachment *DiscordAttachment) *discordgo.File {
+		return attachment.Build()
+	})
+
+	var mentions *discordgo.MessageAllowedMentions = nil
+	if opts.AllowedMentions != nil {
+		mentions = opts.AllowedMentions.Build()
+	}
+
+	return self.discord.session.InteractionRespond(self.interaction.Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseChannelMessageWithSource,
+		Data: &discordgo.InteractionResponseData{
+			Content: opts.Content,
+			Embeds: embeds,
+			TTS: opts.TTS,
+			Files: files,
+			AllowedMentions: mentions,
+		},
+	})
+}
+
 // EditReply edits the interaction reply, or sends it if [DeferReply] was used.
 //
 // Parameters:
@@ -79,6 +118,40 @@ func (self *DiscordInteractionUnit) Reply(message string) error {
 func (self *DiscordInteractionUnit) EditReply(message *string) error {
 	_, err := self.discord.session.InteractionResponseEdit(self.interaction.Interaction, &discordgo.WebhookEdit{
 		Content: message,
+	})
+
+	return err
+}
+
+// EditReplyOptions edits the interaction reply with advanced options, or sends it if [DeferReply] was used.
+//
+// Parameters:
+//   opts - Reference to the message edit options including content, embeds, and allowed mentions.
+//
+// Returns an error on failure.
+//
+// See: [DiscordMessageEdit]
+// See: [discordgo.Session.InteractionResponseEdit]
+// See: [discordgo.InteractionCreate.Interaction]
+// See: [discordgo.WebhookEdit]
+func (self *DiscordInteractionUnit) EditReplyOptions(opts *DiscordMessageEdit) error {
+	var embeds *[]*discordgo.MessageEmbed = nil
+	if opts.Embeds != nil {
+		newEmbeds := convertAll(*opts.Embeds, func (embed *DiscordEmbed) *discordgo.MessageEmbed {
+			return embed.Build()
+		})
+		embeds = &newEmbeds
+	}
+
+	var mentions *discordgo.MessageAllowedMentions = nil
+	if opts.AllowedMentions != nil {
+		mentions = opts.AllowedMentions.Build()
+	}
+
+	_, err := self.discord.session.InteractionResponseEdit(self.interaction.Interaction, &discordgo.WebhookEdit{
+		Content: opts.Content,
+		Embeds: embeds,
+		AllowedMentions: mentions,
 	})
 
 	return err
